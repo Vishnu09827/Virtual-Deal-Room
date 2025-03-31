@@ -8,14 +8,17 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { createDeal } from "./dealSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchDeal, updateDeal } from "./dealSlice";
 import "./Deal.css";
 import { fetchUsers } from "../auth/authSlice";
 
-const CreateDeal = () => {
+const EditDeal = () => {
+  const { did } = useParams();
   const navigate = useNavigate();
-  const { users } = useSelector((state) => state.auth);
+  const { users, user } = useSelector((state) => state.auth);
+  const { deal } = useSelector((state) => state.deals);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -24,15 +27,34 @@ const CreateDeal = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    if (deal) {
+      setTitle(deal.title || "");
+      setDescription(deal.description || "");
+      setPrice(deal.price || "");
+      setSelectedId(
+        user.role === "buyer" ? deal?.seller?._id : deal?.buyer?._id || ""
+      );
+    }
+  }, [deal, user.role]);
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    dispatch(fetchUsers());
+    dispatch(fetchDeal(did));
+  }, [dispatch, did]);
+
+  const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const data = await dispatch(
-        createDeal({ title, description, price, selectedId })
-      ).unwrap();
+      const { role } = user;
+      const userKey = role === "buyer" ? "seller" : "buyer";
+      const payload = {
+        _id: did,
+        title,
+        description,
+        price,
+        [userKey]: selectedId,
+      };
+      const data = await dispatch(updateDeal(payload)).unwrap();
       navigate("/deals");
       setTitle("");
       setDescription("");
@@ -44,8 +66,8 @@ const CreateDeal = () => {
 
   return (
     <div className="deal-container">
-      <h2 className="deal-heading">Create a New Deal</h2>
-      <form onSubmit={handleSubmit} className="deal-form-container">
+      <h2 className="deal-heading">Update Deal</h2>
+      <form onSubmit={handleUpdate} className="deal-form-container">
         <TextField
           id="deal-title-input"
           variant="outlined"
@@ -99,7 +121,7 @@ const CreateDeal = () => {
             Cancel
           </Button>
           <Button type="submit" variant="outlined">
-            Add Deal
+            Update Deal
           </Button>
         </div>
       </form>
@@ -107,4 +129,4 @@ const CreateDeal = () => {
   );
 };
 
-export default CreateDeal;
+export default EditDeal;

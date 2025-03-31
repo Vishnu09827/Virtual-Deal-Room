@@ -1,18 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
-import "./Auth.css";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "./authSlice";
+import "./Auth.css";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const { loading, error, user } = useSelector((state) => state.auth);
   const [form, setForm] = useState({ email: "", password: "" });
 
-  const handleLogin = (e) => {
+  useEffect(() => {
+    if (user && localStorage.getItem("token")) {
+      navigate("/deals");
+    }
+  }, [user, navigate]);
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(form));
+    try {
+      await dispatch(loginUser(form)).unwrap();
+      navigate("/deals");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Invalid credentials! Please try again.");
+    }
   };
 
   return (

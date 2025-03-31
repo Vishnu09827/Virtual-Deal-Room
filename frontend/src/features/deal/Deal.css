@@ -1,0 +1,102 @@
+.deal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 100vh;
+}
+.deal-form-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+
+.deal-btn-sec {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.deals-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deals-header-sec {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Deal card */
+
+.deal-card-container {
+  all: unset;
+  background: #bcbcbc;
+  padding: 24px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+#deal-card-delete-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+#deal-card-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  width: fit-content;
+}
+
+/* Deal room css */
+.MuiDrawer-root .MuiPaper-root {
+  width: 50%;
+  padding: 15px;
+}
+
+.deal-room-container {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+}
+
+.deal-room-msg-container {
+  display: flex;
+  flex-flow: column;
+  gap: 6px;
+  height: calc(100vh - 17vh);
+}
+
+.deal-room-msg {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.deal-room-input-btn-sec {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.deal-room-input {
+  align-self: flex-end;
+  padding: 10px;
+  height: 35px;
+  /* flex-grow: 1; */
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid lightsalmon;
+  width: 400px;
+}

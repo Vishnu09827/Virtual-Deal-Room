@@ -7,13 +7,14 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import { Link } from "react-router-dom";
-import "./Auth.css";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "./authSlice";
+import "./Auth.css";
 
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
   const [form, setForm] = useState({
     name: "",
@@ -22,9 +23,14 @@ const Register = () => {
     role: "buyer",
   });
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    dispatch(registerUser(form));
+    try {
+      const data = await dispatch(registerUser(form)).unwrap();
+      if (data) navigate("/login");
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -36,6 +42,7 @@ const Register = () => {
           label="UserName"
           variant="outlined"
           value={form.name}
+          required
           onChange={(e) => setForm({ ...form, name: e.target.value })}
         />
         <TextField
@@ -43,6 +50,7 @@ const Register = () => {
           label="Email"
           variant="outlined"
           value={form.email}
+          required
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
         <TextField
@@ -50,6 +58,7 @@ const Register = () => {
           label="Password"
           variant="outlined"
           value={form.password}
+          required
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
         <FormControl fullWidth>
@@ -60,13 +69,16 @@ const Register = () => {
             onChange={(e) => setForm({ ...form, role: e.target.value })}
           >
             <MenuItem value={"buyer"}>Buyer</MenuItem>
-            <MenuItem value={"Seller"}>Seller</MenuItem>
+            <MenuItem value={"seller"}>Seller</MenuItem>
           </Select>
         </FormControl>
-        <Button onClick={handleRegister}>SUBMIT</Button>
+        <Button type="sumbit" disabled={loading}>
+          SUBMIT
+        </Button>
         <p>
           Have an account ? <Link to="/login"> LogIn </Link>
         </p>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
