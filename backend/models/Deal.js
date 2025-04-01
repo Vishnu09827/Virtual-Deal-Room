@@ -14,8 +14,9 @@ const DealSchema = new mongoose.Schema({
   seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   documents: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: "Document",
+      filename: String,
+      path: String,
+      uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
   ],
   createdAt: {

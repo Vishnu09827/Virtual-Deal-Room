@@ -9,6 +9,7 @@ import CreateDeal from "./features/deal/CreateDeal";
 import Header from "./components/Header";
 import ProtectedRoute from "./features/auth/ProtectedRoute";
 import EditDeal from "./features/deal/EditDeal";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public routes */}
-          <Route index path="register" element={<Register />} />
+          <Route index element={<HomePage />} />
+          <Route path="register" element={<Register />} />
           <Route path="login" element={<Login />} />
 
           {/* Protected  routes*/}

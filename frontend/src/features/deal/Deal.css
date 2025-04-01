@@ -59,44 +59,102 @@
 }
 
 /* Deal room css */
-.MuiDrawer-root .MuiPaper-root {
-  width: 50%;
-  padding: 15px;
-}
-
 .deal-room-container {
-  display: flex;
-  flex-flow: column;
-  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .deal-room-msg-container {
-  display: flex;
-  flex-flow: column;
-  gap: 6px;
-  height: calc(100vh - 17vh);
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 15px;
 }
 
 .deal-room-msg {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 21px;
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 8px;
+  width: fit-content;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.deal-room-msg strong {
+  color: #1565c0;
+}
+
+.deal-room-offer-msg {
+  display: flex;
+  gap: 10px;
+  max-width: 100%;
+  background-color: #e3f2fd;
+  border-left: 4px solid #1e88e5;
 }
 
 .deal-room-input-btn-sec {
   display: flex;
   gap: 10px;
-  justify-content: space-between;
   margin-bottom: 10px;
 }
 
 .deal-room-input {
-  align-self: flex-end;
+  flex: 1;
   padding: 10px;
-  height: 35px;
-  /* flex-grow: 1; */
-  border-radius: 4px;
-  outline: none;
-  border: 1px solid lightsalmon;
-  width: 400px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#deal-room-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  text-transform: none;
+}
+
+.deal-documents {
+  margin-top: 15px;
+}
+
+.deal-documents h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.deal-documents ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.deal-documents li {
+  margin: 5px 0;
+}
+
+.deal-documents a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.deal-documents a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .deal-room-container {
+    padding: 10px;
+  }
+  
+  .deal-room-input-btn-sec {
+    flex-direction: column;
+  }
 }

@@ -30,7 +30,7 @@ const Login = () => {
 
   return (
     <div className="login-form-container">
-      <div className="login-form-heading">LOGIN</div>
+      <h2 className="login-form-heading">LOGIN</h2>
       <form className="login-form" onSubmit={handleLogin}>
         <TextField
           id="login-form-email"
@@ -44,7 +44,7 @@ const Login = () => {
           variant="outlined"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
-        <Button onClick={handleLogin} disabled={loading}>
+        <Button onClick={handleLogin} variant="contained" disabled={loading}>
           LOGIN
         </Button>
         <p>

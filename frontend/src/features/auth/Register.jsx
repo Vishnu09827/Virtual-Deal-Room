@@ -35,7 +35,7 @@ const Register = () => {
 
   return (
     <div className="register-form-container">
-      <div className="register-form-heading">CREATE AN ACCOUNT</div>
+      <h2 className="register-form-heading">CREATE AN ACCOUNT</h2>
       <form className="register-form" onSubmit={handleRegister}>
         <TextField
           id="register-form-username"
@@ -72,8 +72,8 @@ const Register = () => {
             <MenuItem value={"seller"}>Seller</MenuItem>
           </Select>
         </FormControl>
-        <Button type="sumbit" disabled={loading}>
-          SUBMIT
+        <Button type="sumbit" variant="contained" disabled={loading}>
+          REGISTER
         </Button>
         <p>
           Have an account ? <Link to="/login"> LogIn </Link>
