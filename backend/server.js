@@ -6,8 +6,8 @@ const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 const http = require("http");
 const path = require("path");
+const fs = require("fs");
 const connectDB = require("./config/dbConn");
-const Deal = require("./models/Deal");
 const dealSocket = require("./sockets/dealSocket");
 
 //Connect to DB
@@ -33,9 +33,15 @@ const io = new Server(server, {
   },
 });
 
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/deals", require("./routes/deal"));
+app.use("/api/payment", require("./routes/payment"));
 
 dealSocket(io);
 

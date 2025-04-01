@@ -10,11 +10,6 @@ const dealController = require("../controllers/dealController");
 const router = express.Router();
 const client = redis.createClient();
 
-const uploadDir = path.join(__dirname, "uploads");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
 router.post("/upload", upload.single("file"), dealController.uploadDocuments);
 
 // router.get("/", authMiddleware, async (req, res) => {

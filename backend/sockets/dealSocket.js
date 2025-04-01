@@ -42,7 +42,6 @@ module.exports = (io) => {
           session.endSession();
           socket.emit("error", { message: "Deal not found" });
           return;
-          return;
         }
         await session.commitTransaction();
         session.endSession();

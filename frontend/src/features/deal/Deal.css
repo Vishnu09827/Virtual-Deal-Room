@@ -1,61 +1,114 @@
-.deal-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  height: 100vh;
-}
-.deal-form-container {
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-}
-
-.deal-btn-sec {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-}
-
+/* Container for the deals section */
 .deals-container {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  width: 80%;
+  margin: auto;
+  padding: 20px;
 }
 
+/* Header section */
 .deals-header-sec {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* Deal card */
+.deal-header {
+  font-size: 24px;
+  font-weight: bold;
+}
 
+/* Deal card styling */
 .deal-card-container {
-  all: unset;
-  background: #bcbcbc;
-  padding: 24px;
-  margin-bottom: 10px;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  position: relative;
-  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 15px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.deal-card-container:hover {
+  transform: translateY(-5px);
+}
+
+.deal-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.deal-description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.deal-price,
+.deal-buyer,
+.deal-seller {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Buttons */
+#deal-card-btn {
+  margin-top: 10px;
+  background-color: #1976d2;
+  color: white;
+}
+
+#deal-card-btn:hover {
+  background-color: #1565c0;
 }
 
 #deal-card-delete-btn {
-  position: absolute;
-  top: 24px;
-  right: 24px;
+  margin: 10px 0 0 10px;
+  color: red;
 }
 
-#deal-card-btn {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  width: fit-content;
+/* Form container */
+.deal-form-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 10px auto;
+}
+
+.deal-heading {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px 0 0 10px;
+  text-align: center;
+}
+
+/* Input fields */
+#deal-title-input,
+#deal-description-input,
+#deal-price-input {
+  width: 100%;
+}
+
+/* Button section */
+.deal-btn-sec {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+#deal-cancel-btn {
+  color: red;
+  border-color: red;
+}
+
+#deal-cancel-btn:hover {
+  background: rgba(255, 0, 0, 0.1);
 }
 
 /* Deal room css */
@@ -124,7 +177,8 @@
   margin-top: 15px;
 }
 
-.deal-documents h3 {
+.deal-documents h3,
+.deal-room-payment h3 {
   font-size: 16px;
   margin-bottom: 5px;
   color: #333;
@@ -153,7 +207,7 @@
   .deal-room-container {
     padding: 10px;
   }
-  
+
   .deal-room-input-btn-sec {
     flex-direction: column;
   }

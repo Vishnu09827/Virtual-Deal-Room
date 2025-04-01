@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { fetchDeals } from "./dealSlice";
 import axios from "axios";
 import { api } from "../../app/api/api";
+import RazorpayPayment from "../../components/RazorpayPayment";
 
 const socket = io("http://localhost:3500");
 
@@ -17,6 +18,7 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
   const [price, setPrice] = useState("");
   const [file, setFile] = useState(null);
   const [documents, setDocuments] = useState([]);
+  const [selectedOffer, setSelectedOffer] = useState({});
 
   useEffect(() => {
     if (!deal || !deal.length) return;
@@ -34,7 +36,6 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
 
     socket.on("deal_updated", (updateddeal) => {
       dispatch(fetchDeals());
-      setIsOpen(false);
     });
 
     socket.on("document_uploaded", (newDoc) => {
@@ -52,6 +53,11 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
   useEffect(() => {
     if (!deal || !deal.length) return;
     setDocuments(deal[0].documents ?? []);
+    setSelectedOffer({
+      type: "offer",
+      sender: userType,
+      price: deal[0].price ?? 1,
+    });
   }, [deal]);
 
   const onChange = (e) => {
@@ -80,7 +86,9 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
     setPrice("");
   };
 
-  const acceptOffer = (offer) => {
+  const acceptOffer = (e, offer) => {
+    e.preventDefault();
+    setSelectedOffer(offer);
     socket.emit("accept_offer", {
       dealId: deal[0]._id,
       sender: userType,
@@ -88,7 +96,8 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
     });
   };
 
-  const rejectOffer = (offer) => {
+  const rejectOffer = (e, offer) => {
+    e.preventDefault();
     socket.emit("reject_offer", {
       dealId: deal[0]._id,
       sender: userType,
@@ -117,7 +126,7 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
     }
   };
 
-  // console.log("mes", messages);
+  console.log("sele", selectedOffer);
 
   return (
     <div className="deal-room-container">
@@ -139,14 +148,14 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
                     <Button
                       variant="contained"
                       color="primary"
-                      onClick={() => acceptOffer(msg)}
+                      onClick={(e) => acceptOffer(e, msg)}
                     >
                       Accept
                     </Button>
                     <Button
                       variant="contained"
                       color="error"
-                      onClick={() => rejectOffer(msg)}
+                      onClick={(e) => rejectOffer(e, msg)}
                     >
                       Reject
                     </Button>
@@ -233,6 +242,15 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
           <p>No documents uploaded yet.</p>
         )}
       </div>
+      {userType === "buyer" && (
+        <div className="deal-room-payment">
+          <h3>Secure Payment</h3>
+          <RazorpayPayment
+            amount={selectedOffer.price || 1}
+            dealId={deal[0]?._id}
+          />
+        </div>
+      )}
     </div>
   );
 };
