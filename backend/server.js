@@ -21,13 +21,13 @@ const server = http.createServer(app);
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true })); // Adjust for frontend
+app.use(cors({ origin: process.env.REACT_APP_URL, credentials: true })); // Adjust for frontend
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Adjust for frontend
+    origin: process.env.REACT_APP_URL, // Adjust for frontend
     credentials: true,
     methods: ["GET", "POST"],
   },
