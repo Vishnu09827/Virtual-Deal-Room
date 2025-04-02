@@ -10,6 +10,7 @@ module.exports = (io) => {
       console.log(`${userType} joined deal ${dealId}`);
 
       io.to(dealId).emit("receive_message", {
+        dealId,
         type: "info",
         text: `${userType} joined the deal.`,
       });
@@ -17,7 +18,7 @@ module.exports = (io) => {
 
     socket.on("send_message", ({ dealId, sender, text }) => {
       console.log(`Message from ${sender}: ${text}`);
-      io.to(dealId).emit("receive_message", { type: "chat", sender, text });
+      io.to(dealId).emit("receive_message", {dealId, type: "chat", sender, text:`${sender}: ${text}` });
     });
 
     socket.on("typing", (data) => {
@@ -73,6 +74,7 @@ module.exports = (io) => {
 
         io.to(dealId).emit("deal_updated", updatedDeal);
         io.to(dealId).emit("receive_message", {
+          dealId,
           type: "status",
           text: `Offer accepted: $${price} by ${sender}`,
         });

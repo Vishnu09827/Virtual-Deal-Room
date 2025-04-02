@@ -6,6 +6,11 @@
     background: #1E3A8A; color: #fff;
 }
 
+.header-app-name{
+    font-size: 2rem;
+    cursor: pointer;
+}
+
 .header-utils{
     display: flex;
     gap: 10px;

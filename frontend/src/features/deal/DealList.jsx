@@ -85,7 +85,7 @@ const DealList = () => {
               variant="contained"
               onClick={(e) => onDeal(e, deal._id)}
             >
-              Deal
+              Negotiate
             </Button>
             <IconButton
               id="deal-card-delete-btn"

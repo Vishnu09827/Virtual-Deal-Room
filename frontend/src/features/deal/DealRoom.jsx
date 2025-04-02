@@ -2,8 +2,8 @@ import { Button } from "@mui/material";
 import { useEffect, useState } from "react";
 import { SendOutlined, UploadFile } from "@mui/icons-material";
 import { io } from "socket.io-client";
-import { useDispatch } from "react-redux";
-import { fetchDeals } from "./dealSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChatMessages, fetchDeals, markMessageAsRead, sendChatMessage } from "./dealSlice";
 import axios from "axios";
 import { api } from "../../app/api/api";
 import RazorpayPayment from "../../components/RazorpayPayment";
@@ -12,6 +12,8 @@ const socket = io("http://localhost:3500");
 
 const DealRoom = ({ deal, userType, setIsOpen }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const { chatMessages } = useSelector((state) => state.deals);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [typing, setTyping] = useState("");
@@ -27,6 +29,14 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
 
     socket.on("receive_message", (data) => {
       setTyping("");
+      dispatch(
+        sendChatMessage({
+          dealId: deal[0]._id,
+          sender: userType,
+          text: data.text || data.price,
+          type: data.type,
+        })
+      );
       setMessages((prev) => [...prev, data]);
     });
 
@@ -58,7 +68,17 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
       sender: userType,
       price: deal[0].price ?? 1,
     });
-  }, [deal]);
+    dispatch(fetchChatMessages(deal[0]?._id));
+    setMessages(chatMessages[deal[0]?._id] || []);
+  }, [deal, dispatch]);
+
+  // useEffect(() => {
+  //   chatMessages[deal[0]?._id]?.forEach((msg) => {
+  //     if (!msg.readBy.includes(user._id)) {
+  //       dispatch(markMessageAsRead({ messageId: msg._id, userId: deal._id }));
+  //     }
+  //   });
+  // }, [messages, dispatch]);
 
   const onChange = (e) => {
     setMessage(e.target.value);
@@ -162,12 +182,8 @@ const DealRoom = ({ deal, userType, setIsOpen }) => {
                   </>
                 )}
               </>
-            ) : msg.type === "info" ? (
-              <>{msg.text}</>
             ) : (
-              <>
-                {msg.sender}: {msg.text}
-              </>
+              <>{msg.text}</>
             )}
           </p>
         ))}

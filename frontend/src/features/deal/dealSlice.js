@@ -98,9 +98,69 @@ export const deleteDeal = createAsyncThunk(
   }
 );
 
+export const fetchChatMessages = createAsyncThunk(
+  "deals/fetchChatMessages",
+  async (dealId, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/deals/chat/${dealId}`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to load messages");
+    }
+  }
+);
+
+// Send a chat message
+export const sendChatMessage = createAsyncThunk(
+  "deals/sendChatMessage",
+  async ({ dealId, senderId, text, type }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(
+        "/deals/chat",
+        {
+          dealId,
+          senderId,
+          text,
+          type,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to send message");
+    }
+  }
+);
+
+export const markMessageAsRead = createAsyncThunk(
+  "chat/markMessageAsRead",
+  async ({ messageId, userId }) => {
+    await fetch(`/chat/read/${messageId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId }),
+    });
+    return { messageId, userId };
+  }
+);
+
 const dealSlice = createSlice({
   name: "deals",
-  initialState: { deals: [], loading: false, error: null, deal: null },
+  initialState: {
+    deals: [],
+    loading: false,
+    error: null,
+    deal: null,
+    chatMessages: {},
+  },
   reducers: {
     updateDealStatus: (state, action) => {
       const { id, status } = action.payload;
@@ -140,6 +200,21 @@ const dealSlice = createSlice({
         state.deals = state.deals.filter(
           (deal) => deal._id !== deletedDeal._id
         );
+      })
+      // Sending a chat message
+      .addCase(sendChatMessage.fulfilled, (state, action) => {
+        const dealId = action.payload.dealId;
+        if (!state.chatMessages[dealId]) {
+          state.chatMessages[dealId] = [];
+        }
+        state.chatMessages[dealId].push(action.payload);
+      })
+      .addCase(markMessageAsRead.fulfilled, (state, action) => {
+        const { messageId, userId } = action.payload;
+        const message = state.messages.find((msg) => msg._id === messageId);
+        if (message) {
+          message.readBy = [...new Set([...message.readBy, userId])]; 
+        }
       });
   },
 });

@@ -1,26 +1,15 @@
 const express = require("express");
 const { body } = require("express-validator");
 const redis = require("redis");
-const path = require("path");
-const fs = require("fs");
 const upload = require("../middlewares/upload");
 const authMiddleware = require("../middlewares/auth");
 const dealController = require("../controllers/dealController");
+const chatController = require("../controllers/chatController");
 
 const router = express.Router();
 const client = redis.createClient();
 
 router.post("/upload", upload.single("file"), dealController.uploadDocuments);
-
-// router.get("/", authMiddleware, async (req, res) => {
-//   client.get("deals", async (err, data) => {
-//     if (data) return res.json(JSON.parse(data));
-
-//     const deals = await Deal.find();
-//     client.setex("deals", 3600, JSON.stringify(deals));
-//     res.json(deals);
-//   });
-// });
 
 // Create Deal
 router.post(
@@ -52,5 +41,11 @@ router.delete("/:id", dealController.deleteDeal);
 router.get("/", authMiddleware, dealController.getDeals);
 
 router.get("/:id", authMiddleware, dealController.getDeal);
+
+//Chat routes
+router.post("/chat", authMiddleware, chatController.saveChat);
+
+router.get("/chat/:dealId", authMiddleware, chatController.getChatHistory);
+router.get("/chat/read/:messageId", authMiddleware, chatController.getChatHistory);
 
 module.exports = router;
