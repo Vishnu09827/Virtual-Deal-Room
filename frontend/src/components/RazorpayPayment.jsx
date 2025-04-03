@@ -21,8 +21,8 @@ const RazorpayPayment = ({ amount, dealId }) => {
       });
 
       const options = {
-        key: import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
-        key_secret: import.meta.env.REACT_APP_RAZORPAY_KEY_SECRET,
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        key_secret: import.meta.env.VITE_RAZORPAY_KEY_SECRET,
         amount: data.amount,
         currency: "INR",
         name: "Virtual Deal Room",
