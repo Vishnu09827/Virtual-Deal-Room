@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://virtual-deal-room-pegz.onrender.com/api",
+  baseURL: import.meta.env.REACT_APP_NODE_API_URL,
   withCredentials: true,
 });
